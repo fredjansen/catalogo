@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export - Grey Literature Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .export-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .export-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .export-card {
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--accent-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .export-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .export-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .export-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .export-card p {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .export-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .export-button:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.05);
+        }
+
+        .export-button:active {
+            transform: scale(0.98);
+        }
+
+        .format-details {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .format-details ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .format-details li {
+            margin-bottom: 0.3rem;
+        }
+
+        .export-options {
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .export-options h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .option-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .option-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .download-status {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .download-status.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>Catalog of Grey Literature Sources in Software Engineering</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="menu">
+                <ul>
+                    <li><a href="introduction.html" class="menu-item">Introduction</a></li>
+                    <li><a href="sourcelist.html" class="menu-item">Source List</a></li>
+                    <li><a href="features.html" class="menu-item">Features</a></li>
+                    <li><a href="collections.html" class="menu-item">Collections</a></li>
+                    <li><a href="limitations.html" class="menu-item">Limitations</a></li>
+                    <li><a href="references.html" class="menu-item">References</a></li>
+                    <li><a href="export.html" class="menu-item active">Export</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="export-container">
+                <h2 class="section-title">Export Catalog Data</h2>
+                <p>Download the complete grey literature catalog in your preferred format. Choose from JSON for data processing, HTML for offline viewing, or Python for analysis scripts.</p>
+
+                <!-- Export Options -->
+                <div class="export-options">
+                    <h3>Export Options</h3>
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="includeIntro" checked>
+                            Include introduction and methodology
+                        </label>
+                        <label>
+                            <input type="checkbox" id="includeSites" checked>
+                            Include site evaluations (41 sites × 33 features)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="includeReferences" checked>
+                            Include references
+                        </label>
+                        <label>
+                            <input type="checkbox" id="includeMetadata" checked>
+                            Include metadata and timestamps
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Export Cards -->
+                <div class="export-grid">
+                    <!-- JSON Export -->
+                    <div class="export-card">
+                        <div class="export-icon">📊</div>
+                        <h3>JSON Schema</h3>
+                        <p>Export catalog data in JSON format for data analysis, API integration, or database import.</p>
+
+                        <button class="export-button" onclick="exportJSON()">
+                            Download JSON
+                        </button>
+
+                        <div class="format-details">
+                            <strong>Includes:</strong>
+                            <ul>
+                                <li>Complete site evaluations</li>
+                                <li>Feature definitions</li>
+                                <li>Structured metadata</li>
+                                <li>References list</li>
+                            </ul>
+                            <strong>File size:</strong> ~450 KB<br>
+                            <strong>Use cases:</strong> Data analysis, API development, database seeding
+                        </div>
+                    </div>
+
+                    <!-- HTML Export -->
+                    <div class="export-card">
+                        <div class="export-icon">🌐</div>
+                        <h3>HTML Package</h3>
+                        <p>Download a complete standalone HTML package for offline viewing with all pages and styles.</p>
+
+                        <button class="export-button" onclick="exportHTML()">
+                            Download HTML
+                        </button>
+
+                        <div class="format-details">
+                            <strong>Includes:</strong>
+                            <ul>
+                                <li>All HTML pages</li>
+                                <li>CSS stylesheets</li>
+                                <li>JavaScript functionality</li>
+                                <li>Embedded data files</li>
+                            </ul>
+                            <strong>File size:</strong> ~800 KB (ZIP)<br>
+                            <strong>Use cases:</strong> Offline browsing, presentations, archival
+                        </div>
+                    </div>
+
+                    <!-- Python Export -->
+                    <div class="export-card">
+                        <div class="export-icon">🐍</div>
+                        <h3>Python Script</h3>
+                        <p>Export as Python data structures ready for analysis with pandas, matplotlib, or scikit-learn.</p>
+
+                        <button class="export-button" onclick="exportPython()">
+                            Download Python
+                        </button>
+
+                        <div class="format-details">
+                            <strong>Includes:</strong>
+                            <ul>
+                                <li>Python dictionaries</li>
+                                <li>Pandas DataFrame setup</li>
+                                <li>Sample analysis code</li>
+                                <li>Data validation functions</li>
+                            </ul>
+                            <strong>File size:</strong> ~150 KB (.py)<br>
+                            <strong>Use cases:</strong> Statistical analysis, machine learning, visualization
+                        </div>
+                    </div>
+                </div>
+
+                <div id="downloadStatus" class="download-status">
+                    <strong>✓ Download started!</strong> Check your browser's download folder.
+                </div>
+
+                <!-- Additional Export Info -->
+                <div class="highlight" style="margin-top: 3rem;">
+                    <h3>Export Information</h3>
+                    <p><strong>Data Freshness:</strong> All exports contain data as of 2025-10-15</p>
+                    <p><strong>License:</strong> This catalog is provided for academic and research purposes. Please cite appropriately when using this data in publications.</p>
+                    <p><strong>Updates:</strong> For the latest version of this catalog, visit the source repository or website.</p>
+
+                    <h4 style="margin-top: 1.5rem;">Recommended Citation:</h4>
+                    <div class="blockquote">
+                        Grey Literature Sources in Software Engineering Catalog (2025). Generated with Claude Code. Available at: [URL]. Accessed: [Date].
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function exportJSON() {
+            showDownloadStatus();
+
+            // Create comprehensive JSON export
+            fetch('docs/sourcelist.json')
+                .then(response => response.json())
+                .then(sourceData => {
+                    return Promise.all([
+                        sourceData,
+                        fetch('docs/features.json').then(r => r.json()),
+                        fetch('docs/introduction.json').then(r => r.json()),
+                        fetch('docs/references.json').then(r => r.json())
+                    ]);
+                })
+                .then(([sources, features, intro, references]) => {
+                    const exportData = {
+                        metadata: {
+                            title: "Grey Literature Sources in Software Engineering - Complete Catalog",
+                            version: "1.0",
+                            exported_date: new Date().toISOString(),
+                            total_sites: sources.total_sites,
+                            total_features: features.total_features,
+                            generator: "Claude Code - Grey Literature Catalog"
+                        },
+                        introduction: document.getElementById('includeIntro').checked ? intro : null,
+                        features: features,
+                        sites: document.getElementById('includeSites').checked ? sources.sites : null,
+                        references: document.getElementById('includeReferences').checked ? references : null
+                    };
+
+                    // Download JSON file
+                    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'grey_literature_catalog.json';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Export error:', error);
+                    alert('Export failed. Please try again.');
+                });
+        }
+
+        function exportHTML() {
+            showDownloadStatus();
+
+            // Create HTML export information
+            const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grey Literature Catalog - Offline Package</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        h1 { color: #2c3e50; }
+        .info { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .button { display: inline-block; background: #3498db; color: white; padding: 10px 20px;
+                  text-decoration: none; border-radius: 4px; margin: 10px 5px; }
+        .button:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <h1>Grey Literature Catalog - HTML Package</h1>
+    <div class="info">
+        <h2>Package Contents</h2>
+        <p>This package contains all HTML pages from the Grey Literature Catalog for offline viewing.</p>
+        <p><strong>Note:</strong> To create a full offline package, please download all files from the catalog directory including:</p>
+        <ul>
+            <li>index.html</li>
+            <li>All page HTML files (introduction, sourcelist, features, collections, etc.)</li>
+            <li>styles.css</li>
+            <li>All files in the sources/ directory (41 site pages)</li>
+            <li>All JSON files in the docs/ directory</li>
+        </ul>
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Download the complete repository/folder structure</li>
+            <li>Open index.html in your browser</li>
+            <li>Navigate using the sidebar menu</li>
+        </ol>
+    </div>
+    <a href="../index.html" class="button">Open Catalog</a>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'grey_literature_catalog_package_info.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('HTML package info downloaded. For a complete offline package, please download the entire catalog folder.');
+        }
+
+        function exportPython() {
+            showDownloadStatus();
+
+            // Create Python export
+            fetch('docs/sourcelist.json')
+                .then(response => response.json())
+                .then(data => {
+                    const pythonCode = `"""
+Grey Literature Catalog - Python Data Export
+Generated: ${new Date().toISOString()}
+Total Sites: ${data.total_sites}
+Total Features: ${data.total_features}
+"""
+
+import json
+from datetime import datetime
+
+# Catalog metadata
+METADATA = {
+    'title': 'Grey Literature Sources in Software Engineering',
+    'version': '1.0',
+    'total_sites': ${data.total_sites},
+    'total_features': ${data.total_features},
+    'generated_date': '${data.generated_date}'
+}
+
+# Complete catalog data
+CATALOG_DATA = ${JSON.stringify(data, null, 4)}
+
+# Convert to pandas DataFrame for analysis
+def load_as_dataframe():
+    """Load catalog data as pandas DataFrame"""
+    try:
+        import pandas as pd
+
+        # Extract site data
+        sites_data = []
+        for site in CATALOG_DATA['sites']:
+            site_dict = {
+                'id': site['id'],
+                'name': site['name'],
+                'url': site['url']
+            }
+
+            # Add all feature answers
+            for eval_item in site['evaluation']:
+                feature_name = eval_item['feature_name']
+                answer = eval_item['answer']
+
+                # Convert lists to strings for DataFrame
+                if isinstance(answer, list):
+                    answer = ', '.join(str(x) for x in answer)
+
+                site_dict[feature_name] = answer
+
+            sites_data.append(site_dict)
+
+        return pd.DataFrame(sites_data)
+
+    except ImportError:
+        print("pandas not installed. Install with: pip install pandas")
+        return None
+
+# Example analysis functions
+def get_site_by_name(name):
+    """Get site data by name"""
+    for site in CATALOG_DATA['sites']:
+        if site['name'].lower() == name.lower():
+            return site
+    return None
+
+def get_sites_by_feature(feature_name, value):
+    """Get all sites matching a specific feature value"""
+    matching_sites = []
+    for site in CATALOG_DATA['sites']:
+        for eval_item in site['evaluation']:
+            if eval_item['feature_name'] == feature_name:
+                if isinstance(eval_item['answer'], list):
+                    if value in eval_item['answer']:
+                        matching_sites.append(site['name'])
+                elif eval_item['answer'] == value:
+                    matching_sites.append(site['name'])
+    return matching_sites
+
+def get_statistics():
+    """Get basic statistics about the catalog"""
+    stats = {
+        'total_sites': len(CATALOG_DATA['sites']),
+        'total_evaluations': sum(len(s['evaluation']) for s in CATALOG_DATA['sites']),
+        'avg_features_per_site': sum(len(s['evaluation']) for s in CATALOG_DATA['sites']) / len(CATALOG_DATA['sites'])
+    }
+    return stats
+
+# Example usage
+if __name__ == '__main__':
+    print("Grey Literature Catalog - Python Export")
+    print("=" * 50)
+
+    # Print statistics
+    stats = get_statistics()
+    for key, value in stats.items():
+        print(f"{key}: {value}")
+
+    print("\\nLoading as DataFrame...")
+    df = load_as_dataframe()
+    if df is not None:
+        print(f"DataFrame shape: {df.shape}")
+        print("\\nFirst 5 sites:")
+        print(df[['name', 'url']].head())
+
+    # Example queries
+    print("\\nStack Exchange sites:")
+    se_sites = get_sites_by_feature('Associated Site', 'stack exchange')
+    for site in se_sites:
+        print(f"  - {site}")
+`;
+
+                    const blob = new Blob([pythonCode], { type: 'text/x-python' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'grey_literature_catalog.py';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Export error:', error);
+                    alert('Export failed. Please try again.');
+                });
+        }
+
+        function showDownloadStatus() {
+            const status = document.getElementById('downloadStatus');
+            status.classList.add('show');
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

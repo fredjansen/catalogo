@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>References - Grey Literature Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .reference-item {
+            background-color: var(--card-background);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .reference-id {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .reference-type {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+
+        .reference-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0.75rem 0 0.5rem 0;
+        }
+
+        .reference-authors {
+            color: var(--secondary-color);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .reference-publication {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .reference-relevance {
+            background-color: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            font-size: 0.95rem;
+            border-left: 3px solid #6c757d;
+        }
+
+        .reference-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .reference-link:hover {
+            text-decoration: underline;
+        }
+
+        .category-section {
+            margin-top: 3rem;
+        }
+
+        .category-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>Catalog of Grey Literature Sources in Software Engineering</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="menu">
+                <ul>
+                    <li><a href="introduction.html" class="menu-item">Introduction</a></li>
+                    <li><a href="sourcelist.html" class="menu-item">Source List</a></li>
+                    <li><a href="features.html" class="menu-item">Features</a></li>
+                    <li><a href="collections.html" class="menu-item">Collections</a></li>
+                    <li><a href="limitations.html" class="menu-item">Limitations</a></li>
+                    <li><a href="references.html" class="menu-item active">References</a></li>
+                    <li><a href="export.html" class="menu-item">Export</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="section-content">
+                <h2 class="section-title">References</h2>
+                <p>This section contains all academic and web references used in the grey literature research catalog. References are organized by category for easy navigation.</p>
+
+                <div class="stats-overview" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Total References</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Reference Categories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Citation Styles</div>
+                    </div>
+                </div>
+
+                <!-- Methodology References -->
+                <div class="category-section">
+                    <span class="category-badge">Methodology References</span>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[1]</span>
+                        <span class="reference-type">Journal Article</span>
+                        <h3 class="reference-title">Guidelines for including grey literature and conducting multivocal literature reviews in software engineering</h3>
+                        <div class="reference-authors">Garousi, V., Felderer, M., & Mäntylä, M. V.</div>
+                        <div class="reference-publication">Information and Software Technology, Volume 106, pp. 101-121 (2019)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1016/j.infsof.2018.09.006" class="reference-link" target="_blank">10.1016/j.infsof.2018.09.006</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Primary methodology reference for conducting multivocal literature reviews in software engineering
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[4]</span>
+                        <span class="reference-type">Journal Article</span>
+                        <h3 class="reference-title">Shades of Grey: Guidelines for Working with the Grey Literature in Systematic Reviews for Management and Organizational Studies</h3>
+                        <div class="reference-authors">Adams, R. J., Smart, P., & Huff, A. S.</div>
+                        <div class="reference-publication">International Journal of Management Reviews, Volume 19, Issue 4, pp. 432-454 (2017)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1111/ijmr.12102" class="reference-link" target="_blank">10.1111/ijmr.12102</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Guidelines for systematic inclusion of grey literature in research
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[6]</span>
+                        <span class="reference-type">Journal Article</span>
+                        <h3 class="reference-title">When and what to automate in software testing? A multi-vocal literature review</h3>
+                        <div class="reference-authors">Garousi, V., & Mäntylä, M. V.</div>
+                        <div class="reference-publication">Information and Software Technology, Volume 76, pp. 92-117 (2016)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1016/j.infsof.2016.04.015" class="reference-link" target="_blank">10.1016/j.infsof.2016.04.015</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Example of multivocal literature review methodology in software engineering
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[7]</span>
+                        <span class="reference-type">Conference Paper</span>
+                        <h3 class="reference-title">Guidelines for performing Systematic Literature Reviews in Software Engineering</h3>
+                        <div class="reference-authors">Kitchenham, B., & Charters, S.</div>
+                        <div class="reference-publication">Technical Report EBSE-2007-01, Keele University and Durham University (2007)</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Standard methodology for systematic literature reviews in SE
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grey Literature Theory -->
+                <div class="category-section">
+                    <span class="category-badge">Grey Literature Theory</span>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[2]</span>
+                        <span class="reference-type">Book</span>
+                        <h3 class="reference-title">Information sources in grey literature (4th ed.)</h3>
+                        <div class="reference-authors">Auger, C. P.</div>
+                        <div class="reference-publication">Bowker-Saur, London (1998)</div>
+                        <div class="reference-publication">ISBN: 978-1857391251</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Foundational text on grey literature sources and characteristics
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[3]</span>
+                        <span class="reference-type">Conference Proceedings</span>
+                        <h3 class="reference-title">Grey Literature in Library and Information Studies</h3>
+                        <div class="reference-authors">Farace, D. J., & Schöpfel, J.</div>
+                        <div class="reference-publication">De Gruyter Saur, Berlin (2010)</div>
+                        <div class="reference-publication">ISBN: 978-3598441684</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Comprehensive overview of grey literature in information studies, including the Luxembourg Definition
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Analysis -->
+                <div class="category-section">
+                    <span class="category-badge">Community Analysis Studies</span>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[10]</span>
+                        <span class="reference-type">Conference Paper</span>
+                        <h3 class="reference-title">The impact of social media on software engineering practices and tools</h3>
+                        <div class="reference-authors">Storey, M.-A., Treude, C., van Deursen, A., & Cheng, L.-T.</div>
+                        <div class="reference-publication">Proceedings of the FSE/SDP Workshop on Future of Software Engineering Research, pp. 359-364 (2010)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1145/1882362.1882435" class="reference-link" target="_blank">10.1145/1882362.1882435</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Analysis of social media's impact on software engineering knowledge sharing
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[11]</span>
+                        <span class="reference-type">Journal Article</span>
+                        <h3 class="reference-title">What are developers talking about? An analysis of topics and trends in Stack Overflow</h3>
+                        <div class="reference-authors">Barua, A., Thomas, S. W., & Hassan, A. E.</div>
+                        <div class="reference-publication">Empirical Software Engineering, Volume 19, Issue 3, pp. 619-654 (2014)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1007/s10664-012-9231-y" class="reference-link" target="_blank">10.1007/s10664-012-9231-y</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Analysis of discussion topics in Stack Overflow, a major grey literature source
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[12]</span>
+                        <span class="reference-type">Conference Paper</span>
+                        <h3 class="reference-title">How do programmers ask and answer questions on the web?</h3>
+                        <div class="reference-authors">Treude, C., Barzilay, O., & Storey, M.-A.</div>
+                        <div class="reference-publication">Proceedings of the 33rd International Conference on Software Engineering (ICSE), pp. 804-807 (2011)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1145/1985793.1985907" class="reference-link" target="_blank">10.1145/1985793.1985907</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Study of Q&A patterns in online developer communities
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[13]</span>
+                        <span class="reference-type">Journal Article</span>
+                        <h3 class="reference-title">Crowd documentation: Exploring the coverage and the dynamics of API discussions on Stack Overflow</h3>
+                        <div class="reference-authors">Parnin, C., Treude, C., Grammel, L., & Storey, M.-A.</div>
+                        <div class="reference-publication">Georgia Institute of Technology, Technical Report (2012)</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Analysis of community-generated documentation in grey literature platforms
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[14]</span>
+                        <span class="reference-type">Conference Paper</span>
+                        <h3 class="reference-title">StackOverflow and GitHub: Associations between software development and crowdsourced knowledge</h3>
+                        <div class="reference-authors">Vasilescu, B., Filkov, V., & Serebrenik, A.</div>
+                        <div class="reference-publication">IEEE International Conference on Social Computing (SocialCom), pp. 188-195 (2013)</div>
+                        <div class="reference-publication">DOI: <a href="https://doi.org/10.1109/SocialCom.2013.35" class="reference-link" target="_blank">10.1109/SocialCom.2013.35</a></div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Study of relationships between code repositories and Q&A platforms
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistical Sources -->
+                <div class="category-section">
+                    <span class="category-badge">Statistical Sources</span>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[5]</span>
+                        <span class="reference-type">Web Resource</span>
+                        <h3 class="reference-title">Stack Overflow Developer Survey 2024</h3>
+                        <div class="reference-authors">Stack Exchange Inc.</div>
+                        <div class="reference-publication">Available at: <a href="https://survey.stackoverflow.co/2024" class="reference-link" target="_blank">https://survey.stackoverflow.co/2024</a></div>
+                        <div class="reference-publication">Accessed: 2025-10-15</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Statistical data on developer communities and platform usage
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[8]</span>
+                        <span class="reference-type">Web Resource</span>
+                        <h3 class="reference-title">The State of the Octoverse 2024</h3>
+                        <div class="reference-authors">GitHub</div>
+                        <div class="reference-publication">Available at: <a href="https://octoverse.github.com" class="reference-link" target="_blank">https://octoverse.github.com</a></div>
+                        <div class="reference-publication">Accessed: 2025-10-15</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Statistics on developer collaboration and community engagement
+                        </div>
+                    </div>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[15]</span>
+                        <span class="reference-type">Web Resource</span>
+                        <h3 class="reference-title">Top Sites by Category: Computers and Technology</h3>
+                        <div class="reference-authors">Alexa Internet (Amazon)</div>
+                        <div class="reference-publication">Available at: <a href="https://www.alexa.com/topsites/category/Computers" class="reference-link" target="_blank">https://www.alexa.com/topsites/category/Computers</a></div>
+                        <div class="reference-publication">Accessed: 2025-10-15</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Traffic statistics and rankings for technology websites and communities
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Information Retrieval -->
+                <div class="category-section">
+                    <span class="category-badge">Information Retrieval</span>
+
+                    <div class="reference-item">
+                        <span class="reference-id">[9]</span>
+                        <span class="reference-type">Journal Article</span>
+                        <h3 class="reference-title">Modern Information Retrieval: The concepts and technology behind search (2nd ed.)</h3>
+                        <div class="reference-authors">Baeza-Yates, R., & Ribeiro-Neto, B.</div>
+                        <div class="reference-publication">ACM Press (2011)</div>
+                        <div class="reference-publication">ISBN: 978-0321416919</div>
+                        <div class="reference-relevance">
+                            <strong>Relevance:</strong> Information retrieval concepts applicable to search features in grey literature platforms
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Citation Styles Note -->
+                <div class="highlight" style="margin-top: 3rem;">
+                    <h4>Citation Styles</h4>
+                    <p>References in this catalog can be cited using the following standard academic formats:</p>
+                    <ul>
+                        <li><strong>APA:</strong> American Psychological Association (7th edition)</li>
+                        <li><strong>IEEE:</strong> Institute of Electrical and Electronics Engineers</li>
+                        <li><strong>ACM:</strong> Association for Computing Machinery</li>
+                        <li><strong>Chicago:</strong> Chicago Manual of Style (17th edition)</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

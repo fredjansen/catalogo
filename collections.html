@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections - Grey Literature Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .table-container {
+            margin: 2rem 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .category-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 1rem;
+        }
+
+        .collections-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .collections-table th {
+            background-color: #34495e;
+            color: white;
+            padding: 0.75rem 0.5rem;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #2c3e50;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .collections-table td {
+            padding: 0.6rem 0.5rem;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .collections-table tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .collections-table tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        .collections-table tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .site-name-cell {
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .site-name-cell a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .site-name-cell a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .cell-content {
+            word-break: break-word;
+            max-width: 200px;
+        }
+
+        .category-description {
+            background-color: #ecf0f1;
+            padding: 1rem 1.5rem;
+            font-style: italic;
+            color: #2c3e50;
+            border-left: 4px solid #3498db;
+        }
+
+        /* Filter Panel Styles */
+        .filter-panel {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .filter-header {
+            background-color: #34495e;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .filter-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .filter-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .filter-content {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-content.collapsed {
+            display: none;
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-section label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+        }
+
+        .filter-section input[type="text"],
+        .filter-section select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .filter-section input[type="text"]:focus,
+        .filter-section select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        .year-range {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .year-range input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            width: 80px;
+        }
+
+        .filter-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-reset {
+            padding: 0.6rem 1.5rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn-reset:hover {
+            background-color: #c0392b;
+        }
+
+        .results-count {
+            background-color: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .no-results {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .highlight {
+            background-color: #ffeb3b;
+            font-weight: 600;
+        }
+
+        .table-container.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>Catalog of Grey Literature Sources in Software Engineering</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="menu">
+                <ul>
+                    <li><a href="introduction.html" class="menu-item">Introduction</a></li>
+                    <li><a href="sourcelist.html" class="menu-item">Source List</a></li>
+                    <li><a href="features.html" class="menu-item">Features</a></li>
+                    <li><a href="collections.html" class="menu-item active">Collections</a></li>
+                    <li><a href="limitations.html" class="menu-item">Limitations</a></li>
+                    <li><a href="references.html" class="menu-item">References</a></li>
+                    <li><a href="export.html" class="menu-item">Export</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <h2 class="section-title">Collections by Feature Categories</h2>
+            <p>This page displays all 41 grey literature sources organized by the 5 feature categories. Each table shows the evaluation results for all facets within a category.</p>
+
+            <!-- Filter Panel -->
+            <div class="filter-panel">
+                <div class="filter-header" onclick="toggleFilters()">
+                    <h3>Filters</h3>
+                    <button class="filter-toggle" id="filterToggle">−</button>
+                </div>
+                <div class="filter-content" id="filterContent">
+                    <div class="filter-section">
+                        <label for="searchBox">Search by Site Name:</label>
+                        <input type="text" id="searchBox" placeholder="Type to search..." oninput="applyFilters()">
+                    </div>
+
+                    <div class="filter-section">
+                        <label for="categoryFilter">Category:</label>
+                        <select id="categoryFilter" onchange="applyFilters()">
+                            <option value="all">All Categories</option>
+                            <option value="Basic Features">Basic Features</option>
+                            <option value="Connection and Data Features">Connection and Data Features</option>
+                            <option value="Statistical Features">Statistical Features</option>
+                            <option value="On Board Features">On Board Features</option>
+                            <option value="Discussions Features">Discussions Features</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-section">
+                        <label>Site Type:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="type-forum" value="forum" onchange="applyFilters()">
+                                <label for="type-forum">Forum</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="type-community" value="community" onchange="applyFilters()">
+                                <label for="type-community">Community</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="type-blog" value="blog" onchange="applyFilters()">
+                                <label for="type-blog">Blog</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="type-website" value="website" onchange="applyFilters()">
+                                <label for="type-website">Website</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <label>Platform:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="platform-stackexchange" value="stack exchange" onchange="applyFilters()">
+                                <label for="platform-stackexchange">Stack Exchange</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="platform-reddit" value="reddit" onchange="applyFilters()">
+                                <label for="platform-reddit">Reddit</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="platform-microsoft" value="microsoft" onchange="applyFilters()">
+                                <label for="platform-microsoft">Microsoft</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="platform-quora" value="quora" onchange="applyFilters()">
+                                <label for="platform-quora">Quora</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="platform-none" value="none" onchange="applyFilters()">
+                                <label for="platform-none">None/Independent</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <label>Creation Year Range:</label>
+                        <div class="year-range">
+                            <input type="number" id="yearMin" placeholder="Min" min="1996" max="2021" oninput="applyFilters()">
+                            <span>to</span>
+                            <input type="number" id="yearMax" placeholder="Max" min="1996" max="2021" oninput="applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-reset" onclick="resetFilters()">Reset All Filters</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Count -->
+            <div class="results-count" id="resultsCount">Showing 41 of 41 sites</div>
+            <div class="no-results" id="noResults">No sites match the current filters. Try adjusting your criteria.</div>
+
+            <div class="table-container" data-category="Basic Features">
+                <div class="category-header">
+                    Basic Features
+                </div>
+                <div class="category-description">
+                    All basic features that characterize sites selected to this research
+                </div>
+                <div class="table-wrapper">
+                    <table class="collections-table">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Associated Site</th>
+                                <th>Creation date</th>
+                                <th>Website organization</th>
+                                <th>Registration methods</th>
+                                <th>Search engines</th>
+                                <th>Type of Audience</th>
+                                <th>Website type</th>
+                                <th>Subarea of software engineering</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/beecrowd_community.html">Beecrowd Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2010</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">own registration, gmail account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">coding, general</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/bytes.html">Bytes</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2002</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding, architecture</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeproject.html">CodeProject</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1999</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, facebook account, linkedin</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, software architects</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, testing, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codecademy_forums.html">Codecademy Forums</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2011</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeguru.html">CodeGuru</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1997</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">website</td>
+                                <td class="cell-content">general, coding, architecture</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codementor_community.html">CodeMentor Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2014</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/coderwall.html">Coderwall</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2011</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/daniweb.html">DaniWeb</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2002</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, IT professionals</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding, architecture, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dev_community.html">DEV Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2017</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, github account, gmail account, apple ID</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/devhubby.html">DevHubby</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2018</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/digitalocean_community.html">DigitalOcean Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2012</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, maintenance, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dzone.html">DZone</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1997</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, linkedin</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, software architects, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, testing, management, evolution</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/experts_exchange.html">Experts Exchange</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1996</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, facebook account, linkedin</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, IT professionals, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, maintenance, testing</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/findnerd.html">FindNerd</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2015</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, facebook account, gmail account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/freecodecamp_forum.html">freeCodeCamp Forum</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2014</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geekinterview.html">GeekInterview</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2005</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geeksforgeeks.html">GeeksforGeeks</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2009</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">website</td>
+                                <td class="cell-content">general, coding, architecture, testing</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_community.html">GitHub Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2019</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_discussions.html">GitHub Discussions</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2020</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding, architecture, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/google_developers_community.html">Google Developers Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2010</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">gmail account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, software architects</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, testing</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hacker_news.html">Hacker News</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2007</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hashnode.html">Hashnode</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2015</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, github account, gmail account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">blog</td>
+                                <td class="cell-content">general, coding, architecture, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/leetcode.html">LeetCode</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2015</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, github account, gmail account, facebook account, linkedin</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">website</td>
+                                <td class="cell-content">coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/lobsters.html">Lobsters</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2012</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/meta_stack_exchange.html">Meta Stack Exchange</a></td>
+                                <td class="cell-content">stack exchange</td>
+                                <td class="cell-content">2009</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/microsoft_qa.html">Microsoft Q&A</a></td>
+                                <td class="cell-content">microsoft</td>
+                                <td class="cell-content">2020</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">outlook account, github account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/product_hunt.html">Product Hunt</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2013</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/language_design_stack_exchange.html">Language Design Stack Exchange</a></td>
+                                <td class="cell-content">stack exchange</td>
+                                <td class="cell-content">2021</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, software architects</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">architecture, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/quora.html">Quora</a></td>
+                                <td class="cell-content">quora</td>
+                                <td class="cell-content">2009</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_cs_career_questions.html">Reddit - CS Career Questions</a></td>
+                                <td class="cell-content">reddit</td>
+                                <td class="cell-content">2012</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">own registration, gmail account, apple ID</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_coding.html">Reddit - Coding</a></td>
+                                <td class="cell-content">reddit</td>
+                                <td class="cell-content">2006</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">own registration, gmail account, apple ID</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_programming.html">Reddit - Programming</a></td>
+                                <td class="cell-content">reddit</td>
+                                <td class="cell-content">2006</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">own registration, gmail account, apple ID</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/showwcase.html">Showwcase</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2020</td>
+                                <td class="cell-content">in communities</td>
+                                <td class="cell-content">own registration, gmail account, github account, linkedin</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/sitepoint_community.html">SitePoint Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1999</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding, architecture, testing</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_development_forum.html">Software Development Forum</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2010</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, coding, architecture, maintenance, testing</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_engineering_stack_exchange.html">Software Engineering Stack Exchange</a></td>
+                                <td class="cell-content">stack exchange</td>
+                                <td class="cell-content">2010</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">software engineers, software architects, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, architecture, management, maintenance, evolution</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_quality_assurance_stack_exchange.html">Software Quality Assurance Stack Exchange</a></td>
+                                <td class="cell-content">stack exchange</td>
+                                <td class="cell-content">2012</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">testers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">testing, general</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/spiceworks_community.html">Spiceworks Community</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">2006</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, linkedin</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">IT professionals, software engineers</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, maintenance, management</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/stack_overflow.html">Stack Overflow</a></td>
+                                <td class="cell-content">stack exchange</td>
+                                <td class="cell-content">2008</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, github account, facebook account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">community</td>
+                                <td class="cell-content">general, coding, architecture, testing, maintenance</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/techrepublic_forums.html">TechRepublic Forums</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1997</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, gmail account, facebook account</td>
+                                <td class="cell-content">string search</td>
+                                <td class="cell-content">IT professionals, software engineers, developers</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">general, management, maintenance, coding</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/webdevelopercom.html">WebDeveloper.com</a></td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">1997</td>
+                                <td class="cell-content">in topics</td>
+                                <td class="cell-content">own registration, facebook account, gmail account</td>
+                                <td class="cell-content">string search, tags/labels search</td>
+                                <td class="cell-content">developers, software engineers, IT professionals</td>
+                                <td class="cell-content">forum</td>
+                                <td class="cell-content">coding, general, architecture</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-container" data-category="Connection and Data Features">
+                <div class="category-header">
+                    Connection and Data Features
+                </div>
+                <div class="category-description">
+                    All connection and data features that characterize sites selected to this research
+                </div>
+                <div class="table-wrapper">
+                    <table class="collections-table">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Has its own API</th>
+                                <th>Can download repository</th>
+                                <th>Has its own Dashboard</th>
+                                <th>Has its app</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/beecrowd_community.html">Beecrowd Community</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/bytes.html">Bytes</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeproject.html">CodeProject</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codecademy_forums.html">Codecademy Forums</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeguru.html">CodeGuru</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codementor_community.html">CodeMentor Community</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/coderwall.html">Coderwall</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/daniweb.html">DaniWeb</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dev_community.html">DEV Community</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/devhubby.html">DevHubby</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/digitalocean_community.html">DigitalOcean Community</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dzone.html">DZone</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/experts_exchange.html">Experts Exchange</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/findnerd.html">FindNerd</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/freecodecamp_forum.html">freeCodeCamp Forum</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geekinterview.html">GeekInterview</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geeksforgeeks.html">GeeksforGeeks</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_community.html">GitHub Community</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_discussions.html">GitHub Discussions</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">can</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/google_developers_community.html">Google Developers Community</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hacker_news.html">Hacker News</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hashnode.html">Hashnode</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/leetcode.html">LeetCode</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/lobsters.html">Lobsters</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/meta_stack_exchange.html">Meta Stack Exchange</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">can</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/microsoft_qa.html">Microsoft Q&A</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/product_hunt.html">Product Hunt</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/language_design_stack_exchange.html">Language Design Stack Exchange</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">can</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/quora.html">Quora</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_cs_career_questions.html">Reddit - CS Career Questions</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_coding.html">Reddit - Coding</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_programming.html">Reddit - Programming</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/showwcase.html">Showwcase</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/sitepoint_community.html">SitePoint Community</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_development_forum.html">Software Development Forum</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_engineering_stack_exchange.html">Software Engineering Stack Exchange</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">can</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_quality_assurance_stack_exchange.html">Software Quality Assurance Stack Exchange</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">can</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/spiceworks_community.html">Spiceworks Community</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/stack_overflow.html">Stack Overflow</a></td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">can</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/techrepublic_forums.html">TechRepublic Forums</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/webdevelopercom.html">WebDeveloper.com</a></td>
+                                <td class="cell-content">no</td>
+                                <td class="cell-content">cannot</td>
+                                <td class="cell-content">yes</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-container" data-category="Statistical Features">
+                <div class="category-header">
+                    Statistical Features
+                </div>
+                <div class="category-description">
+                    All statistical features that characterize sites selected to this research
+                </div>
+                <div class="table-wrapper">
+                    <table class="collections-table">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Daily audience</th>
+                                <th>Total users registered</th>
+                                <th>Question rated</th>
+                                <th>Answer rated</th>
+                                <th>Percentual answered</th>
+                                <th>Average number of interactions per question</th>
+                                <th>Total of citations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/beecrowd_community.html">Beecrowd Community</a></td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">1000000</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">70</td>
+                                <td class="cell-content">4.5</td>
+                                <td class="cell-content">500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/bytes.html">Bytes</a></td>
+                                <td class="cell-content">50000</td>
+                                <td class="cell-content">250000</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">65</td>
+                                <td class="cell-content">3.0</td>
+                                <td class="cell-content">200</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeproject.html">CodeProject</a></td>
+                                <td class="cell-content">2000000</td>
+                                <td class="cell-content">15000000</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">80</td>
+                                <td class="cell-content">4.0</td>
+                                <td class="cell-content">8000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codecademy_forums.html">Codecademy Forums</a></td>
+                                <td class="cell-content">1000000</td>
+                                <td class="cell-content">50000000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">75</td>
+                                <td class="cell-content">3.5</td>
+                                <td class="cell-content">1500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeguru.html">CodeGuru</a></td>
+                                <td class="cell-content">100000</td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">60</td>
+                                <td class="cell-content">2.5</td>
+                                <td class="cell-content">1000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codementor_community.html">CodeMentor Community</a></td>
+                                <td class="cell-content">300000</td>
+                                <td class="cell-content">3000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">72</td>
+                                <td class="cell-content">3.8</td>
+                                <td class="cell-content">600</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/coderwall.html">Coderwall</a></td>
+                                <td class="cell-content">20000</td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">50</td>
+                                <td class="cell-content">2.0</td>
+                                <td class="cell-content">100</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/daniweb.html">DaniWeb</a></td>
+                                <td class="cell-content">150000</td>
+                                <td class="cell-content">4000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">70</td>
+                                <td class="cell-content">3.2</td>
+                                <td class="cell-content">2000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dev_community.html">DEV Community</a></td>
+                                <td class="cell-content">1500000</td>
+                                <td class="cell-content">2000000</td>
+                                <td class="cell-content">Liked (reactions), Reactions</td>
+                                <td class="cell-content">Liked (reactions), Reactions</td>
+                                <td class="cell-content">65</td>
+                                <td class="cell-content">5.8</td>
+                                <td class="cell-content">2500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/devhubby.html">DevHubby</a></td>
+                                <td class="cell-content">80000</td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">68</td>
+                                <td class="cell-content">2.8</td>
+                                <td class="cell-content">150</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/digitalocean_community.html">DigitalOcean Community</a></td>
+                                <td class="cell-content">3000000</td>
+                                <td class="cell-content">5000000</td>
+                                <td class="cell-content">Liked by users, Reactions</td>
+                                <td class="cell-content">Liked by users, Reactions</td>
+                                <td class="cell-content">80</td>
+                                <td class="cell-content">4.5</td>
+                                <td class="cell-content">6500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dzone.html">DZone</a></td>
+                                <td class="cell-content">2000000</td>
+                                <td class="cell-content">3000000</td>
+                                <td class="cell-content">Liked by users, Upvoted by users</td>
+                                <td class="cell-content">Liked by users, Upvoted by users</td>
+                                <td class="cell-content">70</td>
+                                <td class="cell-content">6.2</td>
+                                <td class="cell-content">8500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/experts_exchange.html">Experts Exchange</a></td>
+                                <td class="cell-content">800000</td>
+                                <td class="cell-content">1500000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">90</td>
+                                <td class="cell-content">5.5</td>
+                                <td class="cell-content">4500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/findnerd.html">FindNerd</a></td>
+                                <td class="cell-content">150000</td>
+                                <td class="cell-content">300000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">65</td>
+                                <td class="cell-content">3.8</td>
+                                <td class="cell-content">500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/freecodecamp_forum.html">freeCodeCamp Forum</a></td>
+                                <td class="cell-content">1000000</td>
+                                <td class="cell-content">4000000</td>
+                                <td class="cell-content">Liked by users, Reactions</td>
+                                <td class="cell-content">Liked by users, Reactions</td>
+                                <td class="cell-content">85</td>
+                                <td class="cell-content">5.0</td>
+                                <td class="cell-content">7000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geekinterview.html">GeekInterview</a></td>
+                                <td class="cell-content">100000</td>
+                                <td class="cell-content">200000</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">55</td>
+                                <td class="cell-content">2.5</td>
+                                <td class="cell-content">300</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geeksforgeeks.html">GeeksforGeeks</a></td>
+                                <td class="cell-content">15000000</td>
+                                <td class="cell-content">8000000</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">85</td>
+                                <td class="cell-content">2.5</td>
+                                <td class="cell-content">12000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_community.html">GitHub Community</a></td>
+                                <td class="cell-content">5000000</td>
+                                <td class="cell-content">100000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">75</td>
+                                <td class="cell-content">4.0</td>
+                                <td class="cell-content">5000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_discussions.html">GitHub Discussions</a></td>
+                                <td class="cell-content">35000000</td>
+                                <td class="cell-content">100000000</td>
+                                <td class="cell-content">Upvoted by users, Reactions</td>
+                                <td class="cell-content">Upvoted by users, Reactions</td>
+                                <td class="cell-content">70</td>
+                                <td class="cell-content">4.2</td>
+                                <td class="cell-content">8000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/google_developers_community.html">Google Developers Community</a></td>
+                                <td class="cell-content">4000000</td>
+                                <td class="cell-content">10000000</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">80</td>
+                                <td class="cell-content">5.5</td>
+                                <td class="cell-content">9000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hacker_news.html">Hacker News</a></td>
+                                <td class="cell-content">5000000</td>
+                                <td class="cell-content">1000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">70</td>
+                                <td class="cell-content">15.5</td>
+                                <td class="cell-content">8500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hashnode.html">Hashnode</a></td>
+                                <td class="cell-content">800000</td>
+                                <td class="cell-content">1500000</td>
+                                <td class="cell-content">Liked (reactions), Reactions</td>
+                                <td class="cell-content">Liked (reactions), Reactions</td>
+                                <td class="cell-content">60</td>
+                                <td class="cell-content">6.2</td>
+                                <td class="cell-content">1200</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/leetcode.html">LeetCode</a></td>
+                                <td class="cell-content">8000000</td>
+                                <td class="cell-content">15000000</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">80</td>
+                                <td class="cell-content">7.3</td>
+                                <td class="cell-content">5000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/lobsters.html">Lobsters</a></td>
+                                <td class="cell-content">50000</td>
+                                <td class="cell-content">25000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">75</td>
+                                <td class="cell-content">12.8</td>
+                                <td class="cell-content">500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/meta_stack_exchange.html">Meta Stack Exchange</a></td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">5000000</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">78</td>
+                                <td class="cell-content">4.5</td>
+                                <td class="cell-content">3500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/microsoft_qa.html">Microsoft Q&A</a></td>
+                                <td class="cell-content">2000000</td>
+                                <td class="cell-content">3000000</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">Upvoted by users, Liked by users</td>
+                                <td class="cell-content">72</td>
+                                <td class="cell-content">3.8</td>
+                                <td class="cell-content">1800</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/product_hunt.html">Product Hunt</a></td>
+                                <td class="cell-content">1000000</td>
+                                <td class="cell-content">6000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">55</td>
+                                <td class="cell-content">25.5</td>
+                                <td class="cell-content">2000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/language_design_stack_exchange.html">Language Design Stack Exchange</a></td>
+                                <td class="cell-content">15000</td>
+                                <td class="cell-content">50000</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">82</td>
+                                <td class="cell-content">5.2</td>
+                                <td class="cell-content">200</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/quora.html">Quora</a></td>
+                                <td class="cell-content">10000000</td>
+                                <td class="cell-content">300000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">65</td>
+                                <td class="cell-content">5.5</td>
+                                <td class="cell-content">7000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_cs_career_questions.html">Reddit - CS Career Questions</a></td>
+                                <td class="cell-content">800000</td>
+                                <td class="cell-content">1500000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">68</td>
+                                <td class="cell-content">12.5</td>
+                                <td class="cell-content">2500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_coding.html">Reddit - Coding</a></td>
+                                <td class="cell-content">3500000</td>
+                                <td class="cell-content">5000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">55</td>
+                                <td class="cell-content">6.5</td>
+                                <td class="cell-content">2200</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_programming.html">Reddit - Programming</a></td>
+                                <td class="cell-content">5000000</td>
+                                <td class="cell-content">7000000</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">Upvoted by users</td>
+                                <td class="cell-content">60</td>
+                                <td class="cell-content">8.5</td>
+                                <td class="cell-content">3000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/showwcase.html">Showwcase</a></td>
+                                <td class="cell-content">150000</td>
+                                <td class="cell-content">350000</td>
+                                <td class="cell-content">Liked (reactions), Reactions</td>
+                                <td class="cell-content">Liked (reactions), Reactions</td>
+                                <td class="cell-content">60</td>
+                                <td class="cell-content">4.5</td>
+                                <td class="cell-content">150</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/sitepoint_community.html">SitePoint Community</a></td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">1200000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">70</td>
+                                <td class="cell-content">4.2</td>
+                                <td class="cell-content">3500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_development_forum.html">Software Development Forum</a></td>
+                                <td class="cell-content">5000</td>
+                                <td class="cell-content">15000</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">50</td>
+                                <td class="cell-content">2.5</td>
+                                <td class="cell-content">50</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_engineering_stack_exchange.html">Software Engineering Stack Exchange</a></td>
+                                <td class="cell-content">800000</td>
+                                <td class="cell-content">500000</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">78</td>
+                                <td class="cell-content">3.8</td>
+                                <td class="cell-content">8500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_quality_assurance_stack_exchange.html">Software Quality Assurance Stack Exchange</a></td>
+                                <td class="cell-content">300000</td>
+                                <td class="cell-content">200000</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">80</td>
+                                <td class="cell-content">3.2</td>
+                                <td class="cell-content">4200</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/spiceworks_community.html">Spiceworks Community</a></td>
+                                <td class="cell-content">600000</td>
+                                <td class="cell-content">6000000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">68</td>
+                                <td class="cell-content">5.2</td>
+                                <td class="cell-content">1800</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/stack_overflow.html">Stack Overflow</a></td>
+                                <td class="cell-content">25000000</td>
+                                <td class="cell-content">23000000</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">Upvoted by users, Upvoted by community</td>
+                                <td class="cell-content">75</td>
+                                <td class="cell-content">3.5</td>
+                                <td class="cell-content">15000</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/techrepublic_forums.html">TechRepublic Forums</a></td>
+                                <td class="cell-content">800000</td>
+                                <td class="cell-content">2500000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">65</td>
+                                <td class="cell-content">3.8</td>
+                                <td class="cell-content">4500</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/webdevelopercom.html">WebDeveloper.com</a></td>
+                                <td class="cell-content">250000</td>
+                                <td class="cell-content">800000</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">Liked by users</td>
+                                <td class="cell-content">72</td>
+                                <td class="cell-content">4.5</td>
+                                <td class="cell-content">2800</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-container" data-category="On Board Features">
+                <div class="category-header">
+                    On Board Features
+                </div>
+                <div class="category-description">
+                    All on Board features that characterize sites selected to this research
+                </div>
+                <div class="table-wrapper">
+                    <table class="collections-table">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Moderation type</th>
+                                <th>Monetization type</th>
+                                <th>Basic required information</th>
+                                <th>Needed qualification</th>
+                                <th>Users Ranking</th>
+                                <th>Actions allowed</th>
+                                <th>Repository metadata</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/beecrowd_community.html">Beecrowd Community</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, contest rankings, badges</td>
+                                <td class="cell-content">post, discuss, compete, solve problems, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/bytes.html">Bytes</a></td>
+                                <td class="cell-content">Moderation</td>
+                                <td class="cell-content">Ads</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points</td>
+                                <td class="cell-content">post, reply, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeproject.html">CodeProject</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, share tips</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codecademy_forums.html">Codecademy Forums</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">websites subscriptions, website services</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, likes</td>
+                                <td class="cell-content">post, reply, like, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeguru.html">CodeGuru</a></td>
+                                <td class="cell-content">Moderation + Editorial</td>
+                                <td class="cell-content">Ads</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points</td>
+                                <td class="cell-content">post, reply, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codementor_community.html">CodeMentor Community</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">website services, services promotions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes, followers</td>
+                                <td class="cell-content">post, reply, vote, comment, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/coderwall.html">Coderwall</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">User account</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, followers</td>
+                                <td class="cell-content">post, share tips, follow users, like</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/daniweb.html">DaniWeb</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges</td>
+                                <td class="cell-content">post, reply, vote, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dev_community.html">DEV Community</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">sponsors posts, sponsors contents</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">followers, reactions, engagement</td>
+                                <td class="cell-content">post, comment, react, follow users, share tips</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/devhubby.html">DevHubby</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">Ads</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/digitalocean_community.html">DigitalOcean Community</a></td>
+                                <td class="cell-content">Community + Moderation, Moderation + Editorial</td>
+                                <td class="cell-content">website services, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, followers</td>
+                                <td class="cell-content">post, comment, like, follow users, share tips</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dzone.html">DZone</a></td>
+                                <td class="cell-content">Moderation + Editorial</td>
+                                <td class="cell-content">Ads, sponsors contents, websites subscriptions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, followers, contribution scores</td>
+                                <td class="cell-content">post, comment, like, vote, follow users, share tips</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/experts_exchange.html">Experts Exchange</a></td>
+                                <td class="cell-content">Moderation + Authorization</td>
+                                <td class="cell-content">websites subscriptions, Ads</td>
+                                <td class="cell-content">User account, email, payment</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, upvotes</td>
+                                <td class="cell-content">Q&A, post, reply, vote, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/findnerd.html">FindNerd</a></td>
+                                <td class="cell-content">Moderation</td>
+                                <td class="cell-content">Ads, website services</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, followers</td>
+                                <td class="cell-content">Q&A, post, comment, like, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/freecodecamp_forum.html">freeCodeCamp Forum</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">donations, sponsors contents</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, likes, engagement</td>
+                                <td class="cell-content">post, reply, like, comment, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geekinterview.html">GeekInterview</a></td>
+                                <td class="cell-content">Moderation</td>
+                                <td class="cell-content">Ads</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">Q&A, post, reply</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geeksforgeeks.html">GeeksforGeeks</a></td>
+                                <td class="cell-content">Moderation + Editorial, Community + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions, website services</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, contest rankings</td>
+                                <td class="cell-content">post, comment, compete, solve problems, vote</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_community.html">GitHub Community</a></td>
+                                <td class="cell-content">Moderation + GitHub staff</td>
+                                <td class="cell-content">website services, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, contribution scores</td>
+                                <td class="cell-content">post, reply, vote, flag</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_discussions.html">GitHub Discussions</a></td>
+                                <td class="cell-content">Repo maintainers + Moderation, Moderation + GitHub staff</td>
+                                <td class="cell-content">websites subscriptions, sponsors contents</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">followers, contribution scores, reactions</td>
+                                <td class="cell-content">post, discuss, reply, vote, comment, react, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/google_developers_community.html">Google Developers Community</a></td>
+                                <td class="cell-content">Moderation + Google oversight, Community + Moderation</td>
+                                <td class="cell-content">website services</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, contribution scores</td>
+                                <td class="cell-content">post, comment, vote, discuss, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hacker_news.html">Hacker News</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">User account</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes</td>
+                                <td class="cell-content">post, comment, vote</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hashnode.html">Hashnode</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">sponsors contents, sponsors posts</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">followers, reactions, engagement</td>
+                                <td class="cell-content">post, comment, react, follow users, share tips</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/leetcode.html">LeetCode</a></td>
+                                <td class="cell-content">Moderation + Community voting</td>
+                                <td class="cell-content">websites subscriptions, Ads</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">contest rankings, points, badges</td>
+                                <td class="cell-content">solve problems, compete, discuss, vote, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/lobsters.html">Lobsters</a></td>
+                                <td class="cell-content">Invite-only + Moderation, Community voting + Moderation</td>
+                                <td class="cell-content">donations</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes</td>
+                                <td class="cell-content">post, comment, vote, flag</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/meta_stack_exchange.html">Meta Stack Exchange</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, flag, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/microsoft_qa.html">Microsoft Q&A</a></td>
+                                <td class="cell-content">Moderation + Microsoft, Community voting + Moderation</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/product_hunt.html">Product Hunt</a></td>
+                                <td class="cell-content">Community voting + Moderation, Moderation + Editorial</td>
+                                <td class="cell-content">Ads, sponsors contents, websites subscriptions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">upvotes, followers, engagement</td>
+                                <td class="cell-content">post, comment, vote, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/language_design_stack_exchange.html">Language Design Stack Exchange</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, flag, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/quora.html">Quora</a></td>
+                                <td class="cell-content">Moderation + Community voting</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">upvotes, followers, engagement</td>
+                                <td class="cell-content">post, reply, vote, comment, follow users, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_cs_career_questions.html">Reddit - CS Career Questions</a></td>
+                                <td class="cell-content">Subreddit moderators, Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes</td>
+                                <td class="cell-content">post, comment, vote, share tips, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_coding.html">Reddit - Coding</a></td>
+                                <td class="cell-content">Subreddit moderators, Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes</td>
+                                <td class="cell-content">post, comment, vote, share tips, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_programming.html">Reddit - Programming</a></td>
+                                <td class="cell-content">Subreddit moderators, Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, upvotes</td>
+                                <td class="cell-content">post, comment, vote, share tips, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/showwcase.html">Showwcase</a></td>
+                                <td class="cell-content">Community + Moderation</td>
+                                <td class="cell-content">sponsors contents, services promotions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">followers, reactions, engagement</td>
+                                <td class="cell-content">post, comment, react, follow users, share tips</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/sitepoint_community.html">SitePoint Community</a></td>
+                                <td class="cell-content">Moderation, Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions, website services</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, likes</td>
+                                <td class="cell-content">post, reply, like, comment, flag</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_development_forum.html">Software Development Forum</a></td>
+                                <td class="cell-content">Moderation</td>
+                                <td class="cell-content">Ads</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points</td>
+                                <td class="cell-content">post, reply, comment</td>
+                                <td class="cell-content">no</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_engineering_stack_exchange.html">Software Engineering Stack Exchange</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, flag, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_quality_assurance_stack_exchange.html">Software Quality Assurance Stack Exchange</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, flag, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/spiceworks_community.html">Spiceworks Community</a></td>
+                                <td class="cell-content">Moderation, Community + Moderation</td>
+                                <td class="cell-content">Ads, sponsors contents, services promotions</td>
+                                <td class="cell-content">User account, email, profile</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, likes</td>
+                                <td class="cell-content">post, reply, like, comment, follow users</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/stack_overflow.html">Stack Overflow</a></td>
+                                <td class="cell-content">Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">badges, points, upvotes</td>
+                                <td class="cell-content">post, reply, vote, comment, flag, Q&A</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/techrepublic_forums.html">TechRepublic Forums</a></td>
+                                <td class="cell-content">Moderation, Moderation + Editorial</td>
+                                <td class="cell-content">Ads, websites subscriptions, sponsors contents</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges</td>
+                                <td class="cell-content">post, reply, like, comment</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/webdevelopercom.html">WebDeveloper.com</a></td>
+                                <td class="cell-content">Moderation, Community voting + Moderation</td>
+                                <td class="cell-content">Ads, websites subscriptions</td>
+                                <td class="cell-content">User account, email</td>
+                                <td class="cell-content">None</td>
+                                <td class="cell-content">points, badges, likes</td>
+                                <td class="cell-content">post, reply, like, comment, flag</td>
+                                <td class="cell-content">yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-container" data-category="Discussions Features">
+                <div class="category-header">
+                    Discussions Features
+                </div>
+                <div class="category-description">
+                    All discussions features that characterize sites selected to this research
+                </div>
+                <div class="table-wrapper">
+                    <table class="collections-table">
+                        <thead>
+                            <tr>
+                                <th>Site Name</th>
+                                <th>Most quoted kind of topics</th>
+                                <th>Experience level</th>
+                                <th>Tone of discussions</th>
+                                <th>Quality level of answers</th>
+                                <th>Non-technical user profile</th>
+                                <th>Most quoted languages</th>
+                                <th>Most quoted frameworks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/beecrowd_community.html">Beecrowd Community</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">competitive, collaborative</td>
+                                <td class="cell-content">accurate, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">c++, python, java, c#</td>
+                                <td class="cell-content">None</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/bytes.html">Bytes</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, incomplete</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">c++, java, python, c#, php</td>
+                                <td class="cell-content">None</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeproject.html">CodeProject</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">c#, .net, c++, java, javascript</td>
+                                <td class="cell-content">angular, react, vue</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codecademy_forums.html">Codecademy Forums</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, javascript, java, ruby</td>
+                                <td class="cell-content">react, django, flask</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codeguru.html">CodeGuru</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">c++, c#, .net, java</td>
+                                <td class="cell-content">None</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/codementor_community.html">CodeMentor Community</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, ruby, php</td>
+                                <td class="cell-content">react, angular, django, laravel</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/coderwall.html">Coderwall</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">experienced software engineers</td>
+                                <td class="cell-content">informal, collaborative</td>
+                                <td class="cell-content">accurate, incomplete</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">javascript, ruby, python, java</td>
+                                <td class="cell-content">react, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/daniweb.html">DaniWeb</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, java, c++, javascript, php</td>
+                                <td class="cell-content">django, spring, react</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dev_community.html">DEV Community</a></td>
+                                <td class="cell-content">technical topics, professional topics, behavioral topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, rust, go</td>
+                                <td class="cell-content">react, vue, angular, django, express</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/devhubby.html">DevHubby</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, javascript, java, php, ruby</td>
+                                <td class="cell-content">react, django, laravel, vue</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/digitalocean_community.html">DigitalOcean Community</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, javascript, php, ruby, go</td>
+                                <td class="cell-content">django, react, express, flask, vue</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/dzone.html">DZone</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">experienced software engineers, researchers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">java, javascript, python, c#, .net</td>
+                                <td class="cell-content">spring, react, angular, django, express</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/experts_exchange.html">Experts Exchange</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">c#, .net, java, javascript, python</td>
+                                <td class="cell-content">angular, react, spring, django</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/findnerd.html">FindNerd</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, incomplete</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">php, javascript, python, java</td>
+                                <td class="cell-content">laravel, react, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/freecodecamp_forum.html">freeCodeCamp Forum</a></td>
+                                <td class="cell-content">technical topics, behavioral topics</td>
+                                <td class="cell-content">beginners</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, c++</td>
+                                <td class="cell-content">react, vue, express, django</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geekinterview.html">GeekInterview</a></td>
+                                <td class="cell-content">technical topics, behavioral topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">informal</td>
+                                <td class="cell-content">incomplete, accurate</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">java, c++, c#, python</td>
+                                <td class="cell-content">spring, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/geeksforgeeks.html">GeeksforGeeks</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, competitive</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">java, python, c++, javascript, c#</td>
+                                <td class="cell-content">react, django, spring, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_community.html">GitHub Community</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, go, rust</td>
+                                <td class="cell-content">react, express, vue</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/github_discussions.html">GitHub Discussions</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, go, rust, c++</td>
+                                <td class="cell-content">react, vue, django, express, flask</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/google_developers_community.html">Google Developers Community</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, go</td>
+                                <td class="cell-content">angular, react, django, express</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hacker_news.html">Hacker News</a></td>
+                                <td class="cell-content">technical topics, professional topics, miscellaneous topics</td>
+                                <td class="cell-content">experienced software engineers, researchers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, go, rust, java</td>
+                                <td class="cell-content">react, vue, django, flask</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/hashnode.html">Hashnode</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, rust, go</td>
+                                <td class="cell-content">react, vue, angular, django, express</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/leetcode.html">LeetCode</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">competitive, collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, java, c++, javascript, c#</td>
+                                <td class="cell-content">react, spring, django</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/lobsters.html">Lobsters</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">rust, go, python, c++, javascript</td>
+                                <td class="cell-content">react, django, flask</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/meta_stack_exchange.html">Meta Stack Exchange</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, c#, php</td>
+                                <td class="cell-content">react, angular, django, spring</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/microsoft_qa.html">Microsoft Q&A</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">c#, .net, python, javascript, java</td>
+                                <td class="cell-content">react, angular, django</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/product_hunt.html">Product Hunt</a></td>
+                                <td class="cell-content">technical topics, professional topics, miscellaneous topics</td>
+                                <td class="cell-content">experienced software engineers</td>
+                                <td class="cell-content">informal, collaborative</td>
+                                <td class="cell-content">accurate, incomplete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java</td>
+                                <td class="cell-content">react, vue, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/language_design_stack_exchange.html">Language Design Stack Exchange</a></td>
+                                <td class="cell-content">technical topics</td>
+                                <td class="cell-content">experienced software engineers, researchers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">rust, c++, python, java</td>
+                                <td class="cell-content">react, vue</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/quora.html">Quora</a></td>
+                                <td class="cell-content">technical topics, professional topics, behavioral topics, miscellaneous topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, incomplete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, java, javascript, c++, c#</td>
+                                <td class="cell-content">react, django, spring, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_cs_career_questions.html">Reddit - CS Career Questions</a></td>
+                                <td class="cell-content">professional topics, behavioral topics, technical topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, incomplete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, java, javascript, c++</td>
+                                <td class="cell-content">react, django, spring</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_coding.html">Reddit - Coding</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">informal, collaborative</td>
+                                <td class="cell-content">accurate, incomplete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, javascript, java, c++, rust</td>
+                                <td class="cell-content">react, django, vue, flask</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/reddit_-_programming.html">Reddit - Programming</a></td>
+                                <td class="cell-content">technical topics, professional topics, miscellaneous topics</td>
+                                <td class="cell-content">beginners, experienced software engineers, researchers</td>
+                                <td class="cell-content">informal, collaborative</td>
+                                <td class="cell-content">accurate, incomplete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, javascript, java, rust, go</td>
+                                <td class="cell-content">react, django, flask, vue</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/showwcase.html">Showwcase</a></td>
+                                <td class="cell-content">technical topics, professional topics, behavioral topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, go, rust</td>
+                                <td class="cell-content">react, vue, django, express</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/sitepoint_community.html">SitePoint Community</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, php, python, ruby</td>
+                                <td class="cell-content">react, vue, angular, laravel</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_development_forum.html">Software Development Forum</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">incomplete, accurate</td>
+                                <td class="cell-content">different country languages, different knowledge</td>
+                                <td class="cell-content">java, python, c++, javascript</td>
+                                <td class="cell-content">spring, django</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_engineering_stack_exchange.html">Software Engineering Stack Exchange</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">experienced software engineers, researchers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">java, c#, python, javascript, c++</td>
+                                <td class="cell-content">spring, django, .net, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/software_quality_assurance_stack_exchange.html">Software Quality Assurance Stack Exchange</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">java, python, javascript, c#</td>
+                                <td class="cell-content">spring, django, angular</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/spiceworks_community.html">Spiceworks Community</a></td>
+                                <td class="cell-content">technical topics, professional topics, miscellaneous topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">python, java, javascript, c#</td>
+                                <td class="cell-content">spring, django, .net</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/stack_overflow.html">Stack Overflow</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, complete, well explained</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, python, java, c#, php, c++</td>
+                                <td class="cell-content">react, angular, django, spring, express</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/techrepublic_forums.html">TechRepublic Forums</a></td>
+                                <td class="cell-content">technical topics, professional topics, miscellaneous topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative, informal</td>
+                                <td class="cell-content">accurate, well explained, incomplete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">java, python, javascript, c#, php</td>
+                                <td class="cell-content">spring, django, .net, react</td>
+                            </tr>
+                            <tr>
+                                <td class="site-name-cell"><a href="sources/webdevelopercom.html">WebDeveloper.com</a></td>
+                                <td class="cell-content">technical topics, professional topics</td>
+                                <td class="cell-content">beginners, experienced software engineers</td>
+                                <td class="cell-content">collaborative</td>
+                                <td class="cell-content">accurate, well explained, complete</td>
+                                <td class="cell-content">different country languages, different cultures, different knowledge</td>
+                                <td class="cell-content">javascript, php, python, java</td>
+                                <td class="cell-content">react, vue, angular, laravel, express</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Toggle filter panel
+        function toggleFilters() {
+            const content = document.getElementById('filterContent');
+            const toggle = document.getElementById('filterToggle');
+            content.classList.toggle('collapsed');
+            toggle.textContent = content.classList.contains('collapsed') ? '+' : '−';
+        }
+
+        // Apply all filters
+        function applyFilters() {
+            const searchText = document.getElementById('searchBox').value.toLowerCase().trim();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const yearMin = document.getElementById('yearMin').value;
+            const yearMax = document.getElementById('yearMax').value;
+
+            // Get selected site types
+            const siteTypes = [];
+            document.querySelectorAll('[id^="type-"]:checked').forEach(cb => {
+                siteTypes.push(cb.value);
+            });
+
+            // Get selected platforms
+            const platforms = [];
+            document.querySelectorAll('[id^="platform-"]:checked').forEach(cb => {
+                platforms.push(cb.value);
+            });
+
+            let totalVisible = 0;
+            let anyResults = false;
+
+            // Process each category table
+            document.querySelectorAll('.table-container').forEach(container => {
+                const category = container.getAttribute('data-category');
+
+                // Category filter
+                if (categoryFilter !== 'all' && category !== categoryFilter) {
+                    container.classList.add('hidden');
+                    return;
+                } else {
+                    container.classList.remove('hidden');
+                }
+
+                // Process rows in this table
+                const rows = container.querySelectorAll('.collections-table tbody tr');
+                let visibleInCategory = 0;
+
+                rows.forEach(row => {
+                    let visible = true;
+                    const cells = row.querySelectorAll('td');
+
+                    if (cells.length === 0) return;
+
+                    const siteName = cells[0].textContent.trim();
+                    const platform = cells.length > 1 ? cells[1].textContent.toLowerCase().trim() : '';
+                    const creationYear = cells.length > 2 ? cells[2].textContent.trim() : '';
+                    const siteType = cells.length > 7 && category === 'Basic Features' ? cells[7].textContent.toLowerCase().trim() : '';
+
+                    // Search filter - highlight matching text
+                    if (searchText) {
+                        const siteLink = cells[0].querySelector('a');
+                        if (siteLink) {
+                            const originalText = siteLink.textContent;
+                            if (siteName.toLowerCase().includes(searchText)) {
+                                // Highlight match
+                                const regex = new RegExp(`(${searchText})`, 'gi');
+                                siteLink.innerHTML = originalText.replace(regex, '<span class="highlight">$1</span>');
+                            } else {
+                                visible = false;
+                                siteLink.innerHTML = originalText; // Remove highlight
+                            }
+                        }
+                    } else {
+                        // Remove highlights when search is cleared
+                        const siteLink = cells[0].querySelector('a');
+                        if (siteLink) {
+                            const text = siteLink.textContent;
+                            siteLink.innerHTML = text;
+                        }
+                    }
+
+                    // Site type filter (only for Basic Features category)
+                    if (siteTypes.length > 0 && category === 'Basic Features') {
+                        if (!siteTypes.includes(siteType)) {
+                            visible = false;
+                        }
+                    }
+
+                    // Platform filter
+                    if (platforms.length > 0) {
+                        let matchesPlatform = false;
+
+                        if (platforms.includes('none') && platform === 'none') {
+                            matchesPlatform = true;
+                        }
+
+                        platforms.forEach(p => {
+                            if (p !== 'none' && platform.includes(p)) {
+                                matchesPlatform = true;
+                            }
+                        });
+
+                        if (!matchesPlatform) {
+                            visible = false;
+                        }
+                    }
+
+                    // Year range filter
+                    if (creationYear) {
+                        const year = parseInt(creationYear.match(/\d{4}/)?.[0] || '0');
+                        if (year) {
+                            if (yearMin && year < parseInt(yearMin)) {
+                                visible = false;
+                            }
+                            if (yearMax && year > parseInt(yearMax)) {
+                                visible = false;
+                            }
+                        }
+                    }
+
+                    // Show/hide row
+                    row.style.display = visible ? '' : 'none';
+                    if (visible) {
+                        visibleInCategory++;
+                        totalVisible++;
+                        anyResults = true;
+                    }
+                });
+
+                // Hide category if no visible rows
+                if (visibleInCategory === 0 && categoryFilter === 'all') {
+                    container.style.display = 'none';
+                } else {
+                    container.style.display = '';
+                }
+            });
+
+            // Update results count
+            document.getElementById('resultsCount').textContent = `Showing ${totalVisible} of 41 sites`;
+
+            // Show/hide no results message
+            if (!anyResults) {
+                document.getElementById('noResults').style.display = 'block';
+                document.getElementById('resultsCount').style.display = 'none';
+            } else {
+                document.getElementById('noResults').style.display = 'none';
+                document.getElementById('resultsCount').style.display = 'block';
+            }
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            // Clear search box
+            document.getElementById('searchBox').value = '';
+
+            // Reset category dropdown
+            document.getElementById('categoryFilter').value = 'all';
+
+            // Uncheck all site type checkboxes
+            document.querySelectorAll('[id^="type-"]').forEach(cb => {
+                cb.checked = false;
+            });
+
+            // Uncheck all platform checkboxes
+            document.querySelectorAll('[id^="platform-"]').forEach(cb => {
+                cb.checked = false;
+            });
+
+            // Clear year range
+            document.getElementById('yearMin').value = '';
+            document.getElementById('yearMax').value = '';
+
+            // Reapply filters (which will show everything)
+            applyFilters();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</body>
+</html>

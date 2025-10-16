@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limitations - Grey Literature Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .limitation-category {
+            background-color: var(--card-background);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .limitation-category h3 {
+            color: #e74c3c;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5rem;
+        }
+
+        .limitation-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 3px solid #ecf0f1;
+        }
+
+        .limitation-item h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .limitation-item p {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .limitation-item ul {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .limitation-item li {
+            margin-bottom: 0.3rem;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .severity-high {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .severity-medium {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .severity-low {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .mitigation-box {
+            background-color: #d5f4e6;
+            border-left: 4px solid #27ae60;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+        }
+
+        .mitigation-box h5 {
+            color: #27ae60;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>Catalog of Grey Literature Sources in Software Engineering</h1>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="menu">
+                <ul>
+                    <li><a href="introduction.html" class="menu-item">Introduction</a></li>
+                    <li><a href="sourcelist.html" class="menu-item">Source List</a></li>
+                    <li><a href="features.html" class="menu-item">Features</a></li>
+                    <li><a href="collections.html" class="menu-item">Collections</a></li>
+                    <li><a href="limitations.html" class="menu-item active">Limitations</a></li>
+                    <li><a href="references.html" class="menu-item">References</a></li>
+                    <li><a href="export.html" class="menu-item">Export</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="section-content">
+                <h2 class="section-title">Research Limitations</h2>
+                <p>This section documents the limitations encountered during the creation and maintenance of this grey literature catalog. Understanding these limitations is essential for proper interpretation of the catalog data and for planning future improvements.</p>
+
+                <div class="stats-overview" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Limitation Categories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">41</div>
+                        <div class="stat-label">Sites Evaluated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">33</div>
+                        <div class="stat-label">Features Assessed</div>
+                    </div>
+                </div>
+
+                <!-- Data Collection Limitations -->
+                <div class="limitation-category">
+                    <h3>1. Data Collection and Accuracy <span class="severity-badge severity-high">High Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>Temporal Data Volatility</h4>
+                        <p>Grey literature platforms are highly dynamic, with frequent changes in features, policies, and user base.</p>
+                        <ul>
+                            <li>Statistical data (user counts, daily audience) represents a snapshot in time (2025-10-15)</li>
+                            <li>Platform features may have changed since data collection</li>
+                            <li>Site popularity and activity levels fluctuate significantly</li>
+                            <li>Some platforms may have been discontinued or merged since evaluation</li>
+                        </ul>
+                        <div class="mitigation-box">
+                            <h5>Mitigation Strategy:</h5>
+                            <p>Regular updates recommended every 6-12 months to maintain data accuracy. Consider implementing automated data collection where APIs are available.</p>
+                        </div>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>Statistical Data Availability</h4>
+                        <p>Not all platforms publicly disclose detailed statistics.</p>
+                        <ul>
+                            <li>Daily audience numbers estimated from third-party analytics tools (Alexa, SimilarWeb)</li>
+                            <li>Total user counts may not be publicly available for all platforms</li>
+                            <li>Answer percentages and interaction metrics difficult to obtain systematically</li>
+                            <li>Some platforms restrict access to analytics data</li>
+                        </ul>
+                        <div class="mitigation-box">
+                            <h5>Mitigation Strategy:</h5>
+                            <p>Data marked as "estimated" where obtained from third-party sources. "Unknown" values used when data unavailable.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI-Generated Content Limitations -->
+                <div class="limitation-category">
+                    <h3>2. AI-Generated Evaluation <span class="severity-badge severity-medium">Medium Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>AI Knowledge Cutoff</h4>
+                        <p>Evaluations generated using AI (Claude) with knowledge cutoff in January 2025.</p>
+                        <ul>
+                            <li>Post-cutoff changes in platforms not reflected</li>
+                            <li>New platforms launched after cutoff not included</li>
+                            <li>Feature updates after January 2025 not captured</li>
+                        </ul>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>AI Interpretation Variability</h4>
+                        <p>Subjective features rely on AI interpretation of platform characteristics.</p>
+                        <ul>
+                            <li>Tone of discussions (collaborative, competitive, informal) based on AI assessment</li>
+                            <li>Quality level of answers subjectively evaluated</li>
+                            <li>Experience levels inferred from platform content and positioning</li>
+                            <li>Most quoted topics/languages/frameworks estimated from AI knowledge</li>
+                        </ul>
+                        <div class="mitigation-box">
+                            <h5>Mitigation Strategy:</h5>
+                            <p>Future improvements should include empirical analysis of actual platform content through web scraping and API analysis where possible.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scope and Coverage Limitations -->
+                <div class="limitation-category">
+                    <h3>3. Scope and Coverage <span class="severity-badge severity-medium">Medium Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>Limited Platform Selection</h4>
+                        <p>Catalog includes 41 platforms, representing a subset of available grey literature sources.</p>
+                        <ul>
+                            <li>Focus on English-language platforms</li>
+                            <li>Emphasis on general software engineering (other specializations underrepresented)</li>
+                            <li>Regional platforms outside English-speaking countries may be excluded</li>
+                            <li>Newer or smaller platforms may not be included</li>
+                        </ul>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>Feature Set Completeness</h4>
+                        <p>33 features evaluated may not capture all relevant platform characteristics.</p>
+                        <ul>
+                            <li>Mobile app features not comprehensively evaluated</li>
+                            <li>Accessibility features not included in evaluation</li>
+                            <li>Privacy and data protection policies not assessed</li>
+                            <li>Community governance models simplified</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Methodology Limitations -->
+                <div class="limitation-category">
+                    <h3>4. Methodology Constraints <span class="severity-badge severity-high">High Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>Single-Point Evaluation</h4>
+                        <p>Each platform evaluated at a single point in time without longitudinal tracking.</p>
+                        <ul>
+                            <li>No trend analysis of platform evolution</li>
+                            <li>Seasonal variations in usage not captured</li>
+                            <li>Platform lifecycle stage not systematically documented</li>
+                        </ul>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>Lack of User Perspective</h4>
+                        <p>Evaluation conducted from researcher perspective without direct user feedback.</p>
+                        <ul>
+                            <li>No user satisfaction surveys conducted</li>
+                            <li>Practitioner preferences not empirically measured</li>
+                            <li>Actual usage patterns vs. stated features not validated</li>
+                            <li>Community sentiment not systematically analyzed</li>
+                        </ul>
+                        <div class="mitigation-box">
+                            <h5>Mitigation Strategy:</h5>
+                            <p>Future work should incorporate user surveys, interviews with practitioners, and analysis of actual usage data where available through platform APIs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Limitations -->
+                <div class="limitation-category">
+                    <h3>5. Technical and Infrastructure <span class="severity-badge severity-low">Low Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>Static Website Architecture</h4>
+                        <p>Catalog implemented as static HTML pages without backend database.</p>
+                        <ul>
+                            <li>No dynamic data updates without file regeneration</li>
+                            <li>User contributions not possible without manual intervention</li>
+                            <li>Search functionality limited to client-side filtering</li>
+                            <li>No analytics on catalog usage patterns</li>
+                        </ul>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>Export Format Limitations</h4>
+                        <p>Export functionality provides basic formats without advanced options.</p>
+                        <ul>
+                            <li>JSON export is raw data without schemas for validation</li>
+                            <li>HTML export lacks styling for offline viewing</li>
+                            <li>Python export provides data structures but not analysis code</li>
+                            <li>No CSV export for spreadsheet analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Research Bias -->
+                <div class="limitation-category">
+                    <h3>6. Potential Research Bias <span class="severity-badge severity-medium">Medium Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>Selection Bias</h4>
+                        <p>Platform selection influenced by researcher awareness and accessibility.</p>
+                        <ul>
+                            <li>Well-known platforms likely overrepresented</li>
+                            <li>Niche or specialized platforms may be underrepresented</li>
+                            <li>Non-English platforms systematically underrepresented</li>
+                            <li>Platforms requiring paid access may be excluded</li>
+                        </ul>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>Categorization Subjectivity</h4>
+                        <p>Feature categories and expected values defined by researchers.</p>
+                        <ul>
+                            <li>Category boundaries may not align with practitioner mental models</li>
+                            <li>Some features span multiple categories</li>
+                            <li>Expected values may not cover all real-world variations</li>
+                            <li>Terminology may vary across different communities</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Future Work and Limitations -->
+                <div class="limitation-category">
+                    <h3>7. Sustainability and Maintenance <span class="severity-badge severity-high">High Impact</span></h3>
+
+                    <div class="limitation-item">
+                        <h4>Update Frequency</h4>
+                        <p>Catalog requires regular manual updates to maintain accuracy.</p>
+                        <ul>
+                            <li>No automated monitoring of platform changes</li>
+                            <li>Resource-intensive process to re-evaluate all platforms</li>
+                            <li>Risk of catalog becoming outdated over time</li>
+                            <li>No version control for tracking historical changes</li>
+                        </ul>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h4>Community Contribution</h4>
+                        <p>Current implementation does not support community-driven updates.</p>
+                        <ul>
+                            <li>No mechanism for practitioners to suggest corrections</li>
+                            <li>New platform submissions require manual processing</li>
+                            <li>No peer review process for data quality assurance</li>
+                            <li>Limited to single researcher or small team maintenance</li>
+                        </ul>
+                        <div class="mitigation-box">
+                            <h5>Mitigation Strategy:</h5>
+                            <p>Consider implementing a GitHub repository with issue tracking for community contributions, or developing a web application with user authentication for collaborative editing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="highlight" style="margin-top: 3rem;">
+                    <h3>Summary of Key Limitations</h3>
+                    <p><strong>Critical Areas for Future Improvement:</strong></p>
+                    <ol>
+                        <li><strong>Temporal Currency:</strong> Implement automated data collection and regular update cycles</li>
+                        <li><strong>Empirical Validation:</strong> Supplement AI evaluations with actual platform data analysis</li>
+                        <li><strong>User Perspectives:</strong> Incorporate practitioner surveys and usage analytics</li>
+                        <li><strong>Platform Coverage:</strong> Expand to include non-English and specialized platforms</li>
+                        <li><strong>Interactive Infrastructure:</strong> Develop database-backed web application for dynamic updates</li>
+                    </ol>
+
+                    <p style="margin-top: 1rem;"><strong>Note:</strong> Despite these limitations, this catalog represents a valuable initial effort to systematically document and categorize grey literature sources in software engineering. The limitations documented here provide a roadmap for iterative improvement and expansion of the catalog.</p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>
