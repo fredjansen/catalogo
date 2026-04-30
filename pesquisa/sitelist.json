@@ -1,0 +1,379 @@
+{
+  "document_title": "Grey Literature Sites - Complete List",
+  "version": "1.0",
+  "total_sites": 41,
+  "last_updated": "2025-10-15",
+  
+  "sites": [
+    {
+      "id": 1,
+      "url": "beecrowd.com/community/",
+      "domain": "beecrowd.com",
+      "path": "/community/",
+      "name": "Beecrowd Community",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "url": "bytes.com",
+      "domain": "bytes.com",
+      "path": "/",
+      "name": "Bytes",
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "url": "codeproject.com",
+      "domain": "codeproject.com",
+      "path": "/",
+      "name": "CodeProject",
+      "status": "active"
+    },
+    {
+      "id": 4,
+      "url": "discuss.codecademy.com",
+      "domain": "discuss.codecademy.com",
+      "path": "/",
+      "name": "Codecademy Forums",
+      "status": "active"
+    },
+    {
+      "id": 5,
+      "url": "codeguru.com",
+      "domain": "codeguru.com",
+      "path": "/",
+      "name": "CodeGuru",
+      "status": "active"
+    },
+    {
+      "id": 6,
+      "url": "codementor.io/community",
+      "domain": "codementor.io",
+      "path": "/community",
+      "name": "CodeMentor Community",
+      "status": "active"
+    },
+    {
+      "id": 7,
+      "url": "coderwall.com",
+      "domain": "coderwall.com",
+      "path": "/",
+      "name": "Coderwall",
+      "status": "active"
+    },
+    {
+      "id": 8,
+      "url": "daniweb.com",
+      "domain": "daniweb.com",
+      "path": "/",
+      "name": "DaniWeb",
+      "status": "active"
+    },
+    {
+      "id": 9,
+      "url": "dev.to",
+      "domain": "dev.to",
+      "path": "/",
+      "name": "DEV Community",
+      "status": "active"
+    },
+    {
+      "id": 10,
+      "url": "devhubby.com",
+      "domain": "devhubby.com",
+      "path": "/",
+      "name": "DevHubby",
+      "status": "active"
+    },
+    {
+      "id": 11,
+      "url": "digitalocean.com/community",
+      "domain": "digitalocean.com",
+      "path": "/community",
+      "name": "DigitalOcean Community",
+      "status": "active"
+    },
+    {
+      "id": 12,
+      "url": "dzone.com",
+      "domain": "dzone.com",
+      "path": "/",
+      "name": "DZone",
+      "status": "active"
+    },
+    {
+      "id": 13,
+      "url": "experts-exchange.com",
+      "domain": "experts-exchange.com",
+      "path": "/",
+      "name": "Experts Exchange",
+      "status": "active"
+    },
+    {
+      "id": 14,
+      "url": "findnerd.com",
+      "domain": "findnerd.com",
+      "path": "/",
+      "name": "FindNerd",
+      "status": "active"
+    },
+    {
+      "id": 15,
+      "url": "forum.freecodecamp.org",
+      "domain": "forum.freecodecamp.org",
+      "path": "/",
+      "name": "freeCodeCamp Forum",
+      "status": "active"
+    },
+    {
+      "id": 16,
+      "url": "geekinterview.com",
+      "domain": "geekinterview.com",
+      "path": "/",
+      "name": "GeekInterview",
+      "status": "active"
+    },
+    {
+      "id": 17,
+      "url": "geeksforgeeks.org",
+      "domain": "geeksforgeeks.org",
+      "path": "/",
+      "name": "GeeksforGeeks",
+      "status": "active"
+    },
+    {
+      "id": 18,
+      "url": "github.community",
+      "domain": "github.community",
+      "path": "/",
+      "name": "GitHub Community",
+      "status": "active"
+    },
+    {
+      "id": 19,
+      "url": "github.com/discussions",
+      "domain": "github.com",
+      "path": "/discussions",
+      "name": "GitHub Discussions",
+      "status": "active"
+    },
+    {
+      "id": 20,
+      "url": "developers.google.com/community",
+      "domain": "developers.google.com",
+      "path": "/community",
+      "name": "Google Developers Community",
+      "status": "active"
+    },
+    {
+      "id": 21,
+      "url": "news.ycombinator.com",
+      "domain": "news.ycombinator.com",
+      "path": "/",
+      "name": "Hacker News",
+      "status": "active"
+    },
+    {
+      "id": 22,
+      "url": "hashnode.com",
+      "domain": "hashnode.com",
+      "path": "/",
+      "name": "Hashnode",
+      "status": "active"
+    },
+    {
+      "id": 23,
+      "url": "leetcode.com",
+      "domain": "leetcode.com",
+      "path": "/",
+      "name": "LeetCode",
+      "status": "active"
+    },
+    {
+      "id": 24,
+      "url": "lobste.rs",
+      "domain": "lobste.rs",
+      "path": "/",
+      "name": "Lobsters",
+      "status": "active"
+    },
+    {
+      "id": 25,
+      "url": "meta.stackexchange.com",
+      "domain": "meta.stackexchange.com",
+      "path": "/",
+      "name": "Meta Stack Exchange",
+      "status": "active"
+    },
+    {
+      "id": 26,
+      "url": "docs.microsoft.com/answers",
+      "domain": "docs.microsoft.com",
+      "path": "/answers",
+      "name": "Microsoft Q&A",
+      "status": "active"
+    },
+    {
+      "id": 27,
+      "url": "producthunt.com",
+      "domain": "producthunt.com",
+      "path": "/",
+      "name": "Product Hunt",
+      "status": "active"
+    },
+    {
+      "id": 28,
+      "url": "langdev.stackexchange.com/",
+      "domain": "langdev.stackexchange.com",
+      "path": "/",
+      "name": "Language Design Stack Exchange",
+      "status": "active"
+    },
+    {
+      "id": 29,
+      "url": "quora.com",
+      "domain": "quora.com",
+      "path": "/",
+      "name": "Quora",
+      "status": "active"
+    },
+    {
+      "id": 30,
+      "url": "reddit.com/r/cscareerquestions",
+      "domain": "reddit.com",
+      "path": "/r/cscareerquestions",
+      "name": "Reddit - CS Career Questions",
+      "status": "active"
+    },
+    {
+      "id": 31,
+      "url": "reddit.com/r/coding",
+      "domain": "reddit.com",
+      "path": "/r/coding",
+      "name": "Reddit - Coding",
+      "status": "active"
+    },
+    {
+      "id": 32,
+      "url": "reddit.com/r/programming",
+      "domain": "reddit.com",
+      "path": "/r/programming",
+      "name": "Reddit - Programming",
+      "status": "active"
+    },
+    {
+      "id": 33,
+      "url": "showwcase.com",
+      "domain": "showwcase.com",
+      "path": "/",
+      "name": "Showwcase",
+      "status": "active"
+    },
+    {
+      "id": 34,
+      "url": "sitepoint.com/community",
+      "domain": "sitepoint.com",
+      "path": "/community",
+      "name": "SitePoint Community",
+      "status": "active"
+    },
+    {
+      "id": 35,
+      "url": "softwaredev.forumotion.com",
+      "domain": "softwaredev.forumotion.com",
+      "path": "/",
+      "name": "Software Development Forum",
+      "status": "active"
+    },
+    {
+      "id": 36,
+      "url": "softwareengineering.stackexchange.com",
+      "domain": "softwareengineering.stackexchange.com",
+      "path": "/",
+      "name": "Software Engineering Stack Exchange",
+      "status": "active"
+    },
+    {
+      "id": 37,
+      "url": "sqa.stackexchange.com/",
+      "domain": "sqa.stackexchange.com",
+      "path": "/",
+      "name": "Software Quality Assurance Stack Exchange",
+      "status": "active"
+    },
+    {
+      "id": 38,
+      "url": "community.spiceworks.com",
+      "domain": "community.spiceworks.com",
+      "path": "/",
+      "name": "Spiceworks Community",
+      "status": "active"
+    },
+    {
+      "id": 39,
+      "url": "stackoverflow.com",
+      "domain": "stackoverflow.com",
+      "path": "/",
+      "name": "Stack Overflow",
+      "status": "active"
+    },
+    {
+      "id": 40,
+      "url": "techrepublic.com/forums",
+      "domain": "techrepublic.com",
+      "path": "/forums",
+      "name": "TechRepublic Forums",
+      "status": "active"
+    },
+    {
+      "id": 41,
+      "url": "webdeveloper.com",
+      "domain": "webdeveloper.com",
+      "path": "/",
+      "name": "WebDeveloper.com",
+      "status": "active"
+    }
+  ],
+  
+  "statistics": {
+    "total_sites": 41,
+    "by_platform": {
+      "stack_exchange": 4,
+      "reddit": 3,
+      "github": 2,
+      "independent": 32
+    },
+    "by_type": {
+      "community": 15,
+      "forum": 12,
+      "q_and_a": 8,
+      "blog_platform": 4,
+      "coding_challenge": 2
+    }
+  },
+  
+  "platform_groups": {
+    "stack_exchange_network": [
+      "meta.stackexchange.com",
+      "langdev.stackexchange.com/",
+      "softwareengineering.stackexchange.com",
+      "sqa.stackexchange.com/",
+      "stackoverflow.com"
+    ],
+    "reddit_network": [
+      "reddit.com/r/cscareerquestions",
+      "reddit.com/r/coding",
+      "reddit.com/r/programming"
+    ],
+    "github_network": [
+      "github.community",
+      "github.com/discussions"
+    ],
+    "microsoft_network": [
+      "docs.microsoft.com/answers"
+    ],
+    "google_network": [
+      "developers.google.com/community"
+    ]
+  }
+}
